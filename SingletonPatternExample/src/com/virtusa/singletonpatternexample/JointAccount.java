@@ -18,14 +18,13 @@ public class JointAccount {
     private int accountValue = 1000000000;
     private final List<JointAccountHolder> accountsList = new ArrayList<>();
 
-// Sir I wanted to throw an Exception if this constructor called 
-    // I used synchronized method and still call throw this exception
     JointAccount() {
         if (jointAccount != null) {
-//            throw new RuntimeException("Please use addDepoite() Method to add into JointAccount ? ");
+            throw new RuntimeException("Please use addDepoite() Method to add into JointAccount ? ");
         }
     }
-    void checkInstance() {
+
+    public static void checkInstance() {
         if (jointAccount == null) {
             synchronized (JointAccount.class) {
                 if (jointAccount == null) {
@@ -36,21 +35,20 @@ public class JointAccount {
     }
 
     void addNewHolder(JointAccountHolder jah) {
-        checkInstance();
         jointAccount.accountsList.add(jah);
         System.out.println("--------------------\n" + "Created Holder " + jah);
-        updateAccountValue(jah.getAssets());
+        updateAccountValue(jah.getName(), jah.getAsset());
         System.out.println(jointAccount + "\n--------------------");
     }
 
     void addDepoite(JointAccountHolder jah, long newDiposit) {
-        updateAccountValue(newDiposit);
-        printAccounts();
+        updateAccountValue(jah.getName(), newDiposit);
     }
 
-    void updateAccountValue(long newDiposit) {
+    void updateAccountValue(String holder, long newDiposit) {
         jointAccount.accountValue += newDiposit;
-        System.out.println(" Added = " + newDiposit + " --> " + jointAccount);
+        System.out.println("Added (" + holder + ") = " + newDiposit + " --> ");
+        printAccounts();
     }
 
     @Override
@@ -58,13 +56,14 @@ public class JointAccount {
         return "Joint Account{ Name:- " + name + ",\tAccount Value:- " + accountValue + "}";
     }
 
-    public JointAccount getJoint() {
+    public static JointAccount getJoint() {
+        checkInstance();
         return jointAccount;
     }
 
     public void printAccounts() {
         for (JointAccountHolder jah : jointAccount.accountsList) {
-            System.out.println(jah);
+            System.out.println("\t" + jah);
         }
     }
 

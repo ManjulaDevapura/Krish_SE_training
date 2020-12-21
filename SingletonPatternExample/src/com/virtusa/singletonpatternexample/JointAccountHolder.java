@@ -9,28 +9,34 @@ package com.virtusa.singletonpatternexample;
  *
  * @author Manjula Devapura
  */
-public class JointAccountHolder extends JointAccount {
+public class JointAccountHolder {
 
     private String name = "";
     private String location = "";
     private long assets = 0;
+    private JointAccount ja;
 
     void setJointAccountHolder(String name, String location, long assets) {
         System.out.println("*************************************************");
         this.name = name;
         this.location = location;
         this.assets = assets;
-        addNewHolder(this);
+        ja = JointAccount.getJoint();
+        ja.addNewHolder(this);
     }
 
-    public long getAssets() {
+    public long getAsset() {
         return this.assets;
+    }
+
+    public String getName() {
+        return this.name;
     }
 
     public void addAssets(long addValue) {
         System.out.println("*************************************************");
         this.assets += addValue;
-        addDepoite(this, addValue);
+        ja.addDepoite(this, addValue);
     }
 
     @Override
